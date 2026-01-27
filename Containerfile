@@ -83,3 +83,5 @@ git clone https://github.com/vishalgit/ezsh ezsh \
 && rm -rf ezsh \
 && sudo chsh -s /bin/zsh builder \
 && paru -Scc --noconfirm
+
+# Setup i3wm and essentials
