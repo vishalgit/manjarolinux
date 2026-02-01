@@ -116,8 +116,9 @@ RUN mise use -g aqua:sharkdp/bat
 RUN mise use -g aqua:eth-p/bat-extras
 RUN mise use -g aqua:sxyazi/yazi
 # Setup aliases
-RUN printf "alias gitdc='gpg --decrypt "${homedir}"/.secrets/gh.gpg'" >> /home/${user}/.bashrc && \
-printf "alias notesbisync='rclone bisync "${homedir}"/notes mega:notes --resync --size-only'" >> /home/${user}/.bashrc && \
-printf "alias notessync='rclone sync "${homedir}"/notes mega:notes'" >> /home/${user}/.bashrc && \
-printf "alias orgbisync='rclone bisync "${homedir}"/org mega:org --resync --size-only'" >> /home/${user}/.bashrc && \
-printf "alias orgsync='rclone sync "${homedir}"/org mega:org'" >> /home/${user}/.bashrc
+RUN printf "alias gitdc='gpg --decrypt "${homedir}"/.secrets/gh.gpg'\n" >> /home/${user}/.bashrc && \
+printf "alias notesbisync='rclone bisync "${homedir}"/notes mega:notes --resync --size-only'\n" >> /home/${user}/.bashrc && \
+printf "alias notessync='rclone sync "${homedir}"/notes mega:notes'\n" >> /home/${user}/.bashrc && \
+printf "alias orgbisync='rclone bisync "${homedir}"/org mega:org --resync --size-only'\n" >> /home/${user}/.bashrc && \
+printf "alias orgsync='rclone sync "${homedir}"/org mega:org'\n" >> /home/${user}/.bashrc && \
+mkdir -p ${homedir}/notes ${homedir}/org
