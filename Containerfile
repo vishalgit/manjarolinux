@@ -100,10 +100,10 @@ RUN yay -Sy --noconfirm fd ripgrep unzip xclip && \
 # Enable kata
 ARG kata_location=${homedir}/.local/bin
 RUN git clone https://github.com/vishalgit/vim-kata && mv vim-kata ${homedir}/.vim-kata && \
-    printf "#!/bin/bash" > ${kata_location}/kata && \
-    printf "export NVIM_APPNAME=kickstart" >> ${kata_location}/kata && \    
-    printf "cd "${homedir}"/.vim-kata" >> ${kata_location}/kata && \
-    printf "./run.sh" >> ${kata_location}/kata && \
+    printf "#!/bin/bash\n" > ${kata_location}/kata && \
+    printf "export NVIM_APPNAME=kickstart\n" >> ${kata_location}/kata && \    
+    printf "cd "${homedir}"/.vim-kata\n" >> ${kata_location}/kata && \
+    printf "./run.sh\n" >> ${kata_location}/kata && \
     chmod u+x ${kata_location}/kata
 
 # Setup rclone
