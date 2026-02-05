@@ -117,7 +117,7 @@ ENV PATH="${homedir}/.emacs.d/bin:${PATH}"
 RUN yay -S --noconfirm emacs-nox && \
     yay -Scc --noconfirm && \
     git clone --depth 1 https://github.com/hlissner/doom-emacs ${homedir}/.emacs.d && \
-    ${homedir}/.emacs.d/bin/doom install --env --fonts
+    ${homedir}/.emacs.d/bin/doom install --env 
 
 # Setup tools
 RUN mise use -g aqua:jqlang/jq
