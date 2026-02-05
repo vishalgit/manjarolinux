@@ -114,7 +114,7 @@ RUN mise use -g aqua:rclone/rclone
 
 # Setup doom emacs
 ENV PATH="${homedir}/.emacs.d/bin:${PATH}"
-RUN yay -S --noconfirm emacs-nox fontconfig shellcheck && \
+RUN yay -S --noconfirm emacs-nox fontconfig pandoc shellcheck && \
     yay -Scc --noconfirm && \
     git clone --depth 1 https://github.com/hlissner/doom-emacs ${homedir}/.emacs.d && \
     ${homedir}/.emacs.d/bin/doom install --env 
