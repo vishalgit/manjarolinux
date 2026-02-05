@@ -96,7 +96,9 @@ RUN yay -Sy --noconfirm fd ripgrep unzip xclip bob && \
     git remote add upstream https://github.com/nvim-lua/kickstart.nvim && \
     git remote set-url --push upstream DISABLE && \
     echo "alias kvim='NVIM_APPNAME=kickstart nvim'" >> ${homedir}/.bashrc && \
-    bob use stable
+    bob use stable && \
+    mkdir -p ~/.local/share/bash-completion/completions && \
+    bob complete bash >> ~/.local/share/bash-completion/completions/bob
 # Enable kata
 ARG kata_location=${homedir}/.local/bin
 RUN git clone https://github.com/vishalgit/vim-kata && mv vim-kata ${homedir}/.vim-kata && \
