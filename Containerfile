@@ -87,15 +87,16 @@ ENV EDITOR=nvim
 ENV VISUAL=nvim
 ENV XDG_CONFIG_HOME=${homedir}/.config
 ENV COLORTERM=truecolor
+ENV PATH="${homedir}/.local/share/bob/nvim-bin:${PATH}"
 
-RUN yay -Sy --noconfirm fd ripgrep unzip xclip && \
+RUN yay -Sy --noconfirm fd ripgrep unzip xclip bob && \
     yay -Scc --noconfirm && \
     git clone https://github.com/vishalgit/kickstart.nvim /home/${user}/.config/kickstart && \
     cd /home/${user}/.config/kickstart && \
     git remote add upstream https://github.com/nvim-lua/kickstart.nvim && \
     git remote set-url --push upstream DISABLE && \
-    mise use -g neovim && \
-    echo "alias kvim='NVIM_APPNAME=kickstart nvim'" >> ${homedir}/.bashrc
+    echo "alias kvim='NVIM_APPNAME=kickstart nvim'" >> ${homedir}/.bashrc && \
+    bob use stable
 # Enable kata
 ARG kata_location=${homedir}/.local/bin
 RUN git clone https://github.com/vishalgit/vim-kata && mv vim-kata ${homedir}/.vim-kata && \
