@@ -3,13 +3,12 @@ FROM manjarolinux/base:latest
 COPY certs/cert.crt /etc/ca-certificates/trust-source/anchors/cert.crt
 
 # Switch to HTTP mirrors to avoid SSL issues in certain network environments and update certificates
-RUN sed -i 's|https://|http://|g' /etc/pacman.d/mirrorlist && \
+RUN pacman-mirrors --api -P http --country all && \
     pacman -Syyu --noconfirm && \
     pacman -S --noconfirm --needed ca-certificates && \
     pacman -Scc --noconfirm && \
     trust extract-compat && \
-    rm /etc/ca-certificates/trust-source/anchors/cert.crt && \
-    sed -i 's|http://|https://|g' /etc/pacman.d/mirrorlist 
+    rm /etc/ca-certificates/trust-source/anchors/cert.crt
 
 # Setup keys for pacman 
 RUN pacman -Sy --noconfirm haveged && \
@@ -67,11 +66,11 @@ ENV MISE_INSTALL_PATH=${homedir}/.local/bin
 ENV PATH=${MISE_INSTALL_PATH}:${PATH}
 
 # Setup AUR helper (yay)
-RUN git clone https://aur.archlinux.org/yay.git && \
-    cd yay && \
+RUN git clone https://aur.archlinux.org/yay-bin.git && \
+    cd yay-bin && \
     makepkg -si --noconfirm && \
     cd .. && \
-    rm -rf yay && \
+    rm -rf yay-bin && \
     yay -Syu --noconfirm && \
     yay -Scc --noconfirm
 
@@ -117,8 +116,6 @@ RUN mise use -g aqua:eth-p/bat-extras
 RUN mise use -g aqua:sxyazi/yazi
 # Setup aliases
 RUN printf "alias gitdc='gpg --decrypt "${homedir}"/.secrets/gh.gpg'\n" >> /home/${user}/.bashrc && \
-printf "alias notesbisync='rclone bisync "${homedir}"/notes mega:notes --resync --size-only'\n" >> /home/${user}/.bashrc && \
-printf "alias notessync='rclone sync "${homedir}"/notes mega:notes'\n" >> /home/${user}/.bashrc && \
 printf "alias orgbisync='rclone bisync "${homedir}"/org mega:org --resync --size-only'\n" >> /home/${user}/.bashrc && \
 printf "alias orgsync='rclone sync "${homedir}"/org mega:org'\n" >> /home/${user}/.bashrc && \
-mkdir -p ${homedir}/notes ${homedir}/org
+mkdir -p ${homedir}/org
