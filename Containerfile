@@ -112,6 +112,13 @@ RUN git clone https://github.com/vishalgit/vim-kata && mv vim-kata ${homedir}/.v
 COPY --chown=${user}:${group} rclone.conf ${XDG_CONFIG_HOME}/rclone/rclone.conf
 RUN mise use -g aqua:rclone/rclone
 
+# Setup doom emacs
+ENV PATH="${homedir}/.emacs.d/bin:${PATH}"
+RUN yay -S --noconfirm emacs-nox && \
+    yay -Scc --noconfirm && \
+    git clone --depth 1 https://github.com/hlissner/doom-emacs ${homedir}/.emacs.d && \
+    ${homedir}/.emacs.d/bin/doom install -y 
+
 # Setup tools
 RUN mise use -g aqua:jqlang/jq
 RUN mise use -g aqua:sharkdp/bat
