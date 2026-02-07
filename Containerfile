@@ -114,7 +114,7 @@ RUN mise use -g aqua:rclone/rclone
 
 # Setup doom emacs
 ENV PATH="${homedir}/.emacs.d/bin:${PATH}"
-RUN yay -S --noconfirm emacs-nox fontconfig pandoc shellcheck && \
+RUN yay -S --noconfirm emacs fontconfig pandoc shellcheck && \
     yay -Scc --noconfirm && \
     git clone --depth 1 https://github.com/hlissner/doom-emacs ${homedir}/.emacs.d && \
     ${homedir}/.emacs.d/bin/doom install --env 
@@ -124,8 +124,28 @@ RUN mise use -g aqua:jqlang/jq
 RUN mise use -g aqua:sharkdp/bat
 RUN mise use -g aqua:eth-p/bat-extras
 RUN mise use -g aqua:sxyazi/yazi
+RUN mise use -g aqua:junegunn/fzf
+RUN mise use -g aqua:ajeetdsouza/zoxide
+RUN mise use -g aqua:lsd-rs/lsd
+RUN mise use -g aqua:jesseduffield/lazygit
+
+# AI Integration in shell
+RUN curl -fsSL https://claude.ai/install.sh | bash
 # Setup aliases
 RUN printf "alias gitdc='gpg --decrypt "${homedir}"/.secrets/gh.gpg'\n" >> /home/${user}/.bashrc && \
 printf "alias orgbisync='rclone bisync "${homedir}"/org mega:org --resync --size-only'\n" >> /home/${user}/.bashrc && \
 printf "alias orgsync='rclone sync "${homedir}"/org mega:org'\n" >> /home/${user}/.bashrc && \
 mkdir -p ${homedir}/org
+
+#Setup tmux
+COPY --chown=${user}:${group} tmux.conf ${homedir}/.tmux.conf
+RUN mise use -g github:tmux/tmux-builds && \
+git clone https://github.com/tmux-plugins/tpm ${homedir}/.tmux/plugins/tpm 
+
+# Set up nerdfont
+RUN yay -Syu wget aria2 --noconfirm && yay -Scc --noconfirm && \
+mkdir -p ${homedir}/.fonts && \
+wget -q --show-progress https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz -O ${homedir}/JetBrainsMono.tar.xz && \
+tar -xvf ${homedir}/JetBrainsMono.tar.xz -C ${homedir}/.fonts && \
+fc-cache -fv ${homedir}/.fonts \
+&& rm -rf ${homedir}/JetBrainsMono.tar.xz
